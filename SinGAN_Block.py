@@ -25,7 +25,7 @@ class generator_First(tf.keras.Model):
         Conv_BN_LeakyRelu(nf, 1, 'same', name=name + '_conv_bn_relu2'),
         Conv_BN_LeakyRelu(nf, 1, 'same', name=name + '_conv_bn_relu3'),
     ]
-    self.out = layers.Conv2D(filters=nf, kernel_size=3, strides=1, padding='same', use_bias=False,
+    self.out = layers.Conv2D(filters=3, kernel_size=3, strides=1, padding='same', use_bias=False,
                              kernel_initializer=RandomNormal(stddev=0.02), name=name + '_output')
     self.actv = tf.keras.activations.tanh
   def call(self, x):
@@ -44,7 +44,7 @@ class generator_Middle(tf.keras.Model):
         Conv_BN_LeakyRelu(nf, 1, 'same', name=name + '_conv_bn_relu2'),
         Conv_BN_LeakyRelu(nf, 1, 'same', name=name + '_conv_bn_relu3'),
     ]
-    self.out = layers.Conv2D(filters=nf, kernel_size=3, strides=1, padding='same', use_bias=False,
+    self.out = layers.Conv2D(filters=3, kernel_size=3, strides=1, padding='same', use_bias=False,
                              kernel_initializer=RandomNormal(stddev=0.02), name=name + '_output')
     self.actv = tf.keras.activations.tanh
   def call(self, x0, z0):
