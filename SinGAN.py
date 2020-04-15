@@ -3,12 +3,14 @@ from SinGAN_Block import *
 class generator_model(tf.keras.Model):
   def __init__(self):
     super(generator_model, self).__init__()
-    self.nf = 128
+    self.nf = 32
+    self.stages = 1
     self.generator_first = generator_First(self.nf, name='generator_0')
     self.generator_middle = []
   def prepare_model(self, z_list):
     nf = self.nf
     for i in range(len(z_list)):
+      self.stages += 1
       if (i + 2) % 4 == 0:
         self.generator_middle.append(generator_Middle(nf, name='generator_{}'.format(i+1)))
       else:
@@ -29,11 +31,13 @@ class generator_model(tf.keras.Model):
 class discriminator_model(tf.keras.Model):
   def __init__(self):
     super(discriminator_model, self).__init__()
-    nf = 128
+    self.stages = 0
+    self.nf = 32
     self.discriminators = []
   def prepare_model(self, z_list):
     nf = self.nf
     for i in range(len(z_list)):
+      self.stages += 1
       if (i + 1) % 4 == 0:
         self.discriminators.append(discriminator(nf, name='discriminator_{}'.format(i)))
       else:

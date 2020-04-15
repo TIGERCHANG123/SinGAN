@@ -91,11 +91,14 @@ class draw:
     plt.show()
     return
 
-  def save_created_pic(self, generator, pic_num, noise_dim, epoch):
-    x = tf.convert_to_tensor(np.random.rand(pic_num, noise_dim))
-    y = generator(x)
+  def save_created_pic(self, generator, epoch, size_list):
+    z_list = []
+    for i in range(len(generator.stages)):
+      z_list.append(tf.zeros(shape=[1, size_list[i], size_list[i]]))
+    z_list[0] = tf.convert_to_tensor(np.random.randn(1, z_list[0].shape, z_list[0].shape))
+
+    y = generator(z_list)
     y=tf.squeeze(y)
-    y = (y + 1) / 2
-    for i in range(pic_num):
-      plt.imsave(self.generated_pic_path+'/{}_{}_{}.png'.format(self.train_time, epoch, i), y[i].numpy())
+    y = ((y + 1) / 2 * 255).astype(np.uint8)
+    plt.imsave(self.generated_pic_path+'/{}_{}.png'.format(self.train_time, epoch), y.numpy())
     return

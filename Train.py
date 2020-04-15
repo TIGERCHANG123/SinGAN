@@ -57,11 +57,11 @@ class train_one_epoch():
         self.gen_loss(-fake_loss)
         self.disc_loss(real_loss)
 
-        trainable_variables = [v for v in self.generator.trainable_variables if int(float(v.name.split('_')[2])) <= stage]
+        trainable_variables = [v for v in self.generator.trainable_variables if 'generator_{}'.format(stage) in v.name]
         gradients_of_generator = GenTape.gradient(-fake_loss + 10.0*g_rec, trainable_variables)
         self.generator_optimizer.apply_gradients(zip(gradients_of_generator, trainable_variables))
 
-        trainable_variables = [v for v in self.discriminator.trainable_variables if int(float(v.name.split('_')[2])) <= stage]
+        trainable_variables = [v for v in self.discriminator.trainable_variables if 'discriminator_{}'.format(stage) in v.name]
         gradients_of_discriminator = DiscTape.gradient(disc_loss, trainable_variables)
         self.discriminator_optimizer.apply_gradients(zip(gradients_of_discriminator, trainable_variables))
 
