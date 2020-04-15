@@ -34,7 +34,8 @@ class train_one_epoch():
                     resize_img = tf.image.resize(image2, mse_img.shape)
                     rmse = tf.math.sqrt(tf.keras.losses.MSE(mse_image_list[i], resize_img))
                     rmse_list.append(rmse)
-            z_list = [rmse_list[i] * tf.convert_to_tensor(np.random.randn(z_list[i].shape, z_list[i].shape)) for i in range(len(self.size_list))]
+            z_list = [rmse_list[i] * tf.convert_to_tensor(np.random.randn(1, z_list[i].shape[1], z_list[i].shape[2], 1))
+                      for i in range(len(self.size_list))]
 
             fake_image_list = self.generator(image1, z_list, training=True)
             real_output, fake_output = self.discriminator(image2, fake_image_list, training=False)
