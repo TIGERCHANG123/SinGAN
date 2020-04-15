@@ -25,7 +25,7 @@ class train_one_epoch():
         z_list[0] = tf.convert_to_tensor(np.random.randn(image1.shape[0], z_list[0].shape[1], z_list[0].shape[2], 1))
         with tf.GradientTape() as GenTape, tf.GradientTape() as DiscTape:
             mse_image_list = self.generator(image1, z_list, training=True)
-            resize_img = tf.image.resize(image2, mse_image_list[-1].shape)
+            resize_img = tf.image.resize(image2, (mse_image_list[-1].shape[1], mse_image_list[-1].shape[2]))
             g_rec = tf.keras.losses.MSE(mse_image_list[-1], resize_img)
 
             rmse_list = [1.0]
