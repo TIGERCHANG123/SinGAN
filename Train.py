@@ -20,7 +20,7 @@ class train_one_epoch():
         z_list = []
         image1 = image
         image2 = image
-        for i in range(stage):
+        for i in range(stage+1):
             z_list.append(tf.zeros(shape=[image1.shape[0], self.size_list[i], self.size_list[i]]))
         z_list[0] = tf.convert_to_tensor(np.random.randn(image1.shape[0], z_list[0].shape, z_list[0].shape))
         with tf.GradientTape() as GenTape, tf.GradientTape() as DiscTape:
