@@ -16,7 +16,7 @@ class generator_model(tf.keras.Model):
       else:
         nf = nf * 2
         self.generator_middle.append(generator_Middle(nf, name='generator_{}'.format(i+1)))
-  def call(self, img=None, z_list=None):
+  def call(self, image, z_list=None):
     x_list = []
     for i in range(len(z_list)):
       if i == 0:
@@ -39,15 +39,14 @@ class discriminator_model(tf.keras.Model):
     for i in range(len(z_list)):
       self.stages += 1
       if (i + 1) % 4 == 0:
-        self.discriminators.append(discriminator(nf, name='discriminator_{}'.format(i)))
+        self.discriminators.append(discriminator_block(nf, name='discriminator_{}'.format(i)))
       else:
         nf = nf * 2
-        self.discriminators.append(discriminator(nf, name='discriminator_{}'.format(i)))
-  def call(self, real_img=None, fake_img_list=None, stage=None):
-    real_x = tf.image.resize(real_img, (fake_img_list[stage].shape[1], fake_img_list[stage].shape[2]))
-    real_x = self.discriminators[stage](real_x)
-    fake_x = self.discriminators[stage](fake_img_list[stage])
-    return real_x, fake_x
+        self.discriminators.append(discriminator_block(nf, name='discriminator_{}'.format(i)))
+
+  def call(self, img=None, stage=None):
+    x = self.discriminators[stage](img)
+    return x
 
 def get_gan():
   Generator = generator_model()

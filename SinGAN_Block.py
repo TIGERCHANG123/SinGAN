@@ -27,7 +27,7 @@ class generator_First(tf.keras.Model):
     ]
     self.out = layers.Conv2D(filters=3, kernel_size=3, strides=1, padding='same', use_bias=False,
                              kernel_initializer=RandomNormal(stddev=0.02), name=name + '_output')
-    self.actv = tf.keras.activations.tanh
+    self.actv = tf.keras.layers.Activation('tanh', name=name+'_tanh')
   def call(self, x):
     for i in range(len(self.conv_list)):
         x = self.conv_list[i](x)
@@ -56,9 +56,9 @@ class generator_Middle(tf.keras.Model):
     x = x + x0
     return x
 
-class discriminator(tf.keras.Model):
+class discriminator_block(tf.keras.Model):
   def __init__(self, nf, name):
-    super(discriminator, self).__init__()
+    super(discriminator_block, self).__init__()
     self.conv = layers.Conv2D(filters=nf, kernel_size=3, strides=1, padding='same', use_bias=False,
                               kernel_initializer=RandomNormal(stddev=0.02), name=name+'_conv')
     self.actv = keras.layers.LeakyReLU(0.2, name=name+'_actv')
