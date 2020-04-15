@@ -20,10 +20,10 @@ class generator_First(tf.keras.Model):
   def __init__(self, nf, name):
     super(generator_First, self).__init__()
     self.conv_list = [
-        Conv_BN_LeakyRelu(nf, 1, 'same', name=name + 'conv_bn_relu1'),
-        Conv_BN_LeakyRelu(nf, 1, 'same', name=name + 'conv_bn_relu1'),
-        Conv_BN_LeakyRelu(nf, 1, 'same', name=name + 'conv_bn_relu2'),
-        Conv_BN_LeakyRelu(nf, 1, 'same', name=name + 'conv_bn_relu3'),
+        Conv_BN_LeakyRelu(nf, 1, 'same', name=name + '_conv_bn_relu1'),
+        Conv_BN_LeakyRelu(nf, 1, 'same', name=name + '_conv_bn_relu1'),
+        Conv_BN_LeakyRelu(nf, 1, 'same', name=name + '_conv_bn_relu2'),
+        Conv_BN_LeakyRelu(nf, 1, 'same', name=name + '_conv_bn_relu3'),
     ]
     self.out = layers.Conv2D(filters=nf, kernel_size=3, strides=1, padding='same', use_bias=False,
                              kernel_initializer=RandomNormal(stddev=0.02), name=name + '_output')
@@ -39,10 +39,10 @@ class generator_Middle(tf.keras.Model):
   def __init__(self, nf, name):
     super(generator_Middle, self).__init__()
     self.conv_list = [
-        Conv_BN_LeakyRelu(nf, 1, 'same', name=name + 'conv_bn_relu1'),
-        Conv_BN_LeakyRelu(nf, 1, 'same', name=name + 'conv_bn_relu1'),
-        Conv_BN_LeakyRelu(nf, 1, 'same', name=name + 'conv_bn_relu2'),
-        Conv_BN_LeakyRelu(nf, 1, 'same', name=name + 'conv_bn_relu3'),
+        Conv_BN_LeakyRelu(nf, 1, 'same', name=name + '_conv_bn_relu1'),
+        Conv_BN_LeakyRelu(nf, 1, 'same', name=name + '_conv_bn_relu1'),
+        Conv_BN_LeakyRelu(nf, 1, 'same', name=name + '_conv_bn_relu2'),
+        Conv_BN_LeakyRelu(nf, 1, 'same', name=name + '_conv_bn_relu3'),
     ]
     self.out = layers.Conv2D(filters=nf, kernel_size=3, strides=1, padding='same', use_bias=False,
                              kernel_initializer=RandomNormal(stddev=0.02), name=name + '_output')
@@ -63,9 +63,9 @@ class discriminator(tf.keras.Model):
                               kernel_initializer=RandomNormal(stddev=0.02), name=name+'_conv')
     self.actv = keras.layers.LeakyReLU(0.2, name=name+'_actv')
     self.conv_list = [
-        Conv_BN_LeakyRelu(nf, 1, 'same', name=name+'conv_bn_relu1'),
-        Conv_BN_LeakyRelu(nf, 1, 'same', name=name+'conv_bn_relu2'),
-        Conv_BN_LeakyRelu(nf, 1, 'same', name=name+'conv_bn_relu3'),
+        Conv_BN_LeakyRelu(nf, 1, 'same', name=name+'_conv_bn_relu1'),
+        Conv_BN_LeakyRelu(nf, 1, 'same', name=name+'_conv_bn_relu2'),
+        Conv_BN_LeakyRelu(nf, 1, 'same', name=name+'_conv_bn_relu3'),
     ]
     self.out = layers.Conv2D(filters=nf, kernel_size=3, strides=1, padding='same', use_bias=False,
                               kernel_initializer=RandomNormal(stddev=0.02), name=name+'_output')

@@ -3,13 +3,15 @@ import os
 import getopt
 import sys
 import tensorflow as tf
-from WGAN import get_gan
+from SinGAN import get_gan
 from show_pic import draw
 import fid
 from Train import train_one_epoch
 from datasets.celeb_A_dataset import celeb_a_dataset
 from tensorflow.compat.v1 import ConfigProto
 from tensorflow.compat.v1 import InteractiveSession
+import numpy as np
+
 
 ubuntu_root='/home/tigerc'
 windows_root='D:/Automatic/SRTP/GAN'
@@ -24,7 +26,14 @@ def main(continue_train, train_time, train_epoch):
     noise_dim = 100
     batch_size = 64
 
-    generator_model, discriminator_model, model_name = get_gan(noise_dim)
+    img_size_max = 250
+    img_size_min = 25
+    scale_factor = 4 / 3
+    tmp_scale = img_size_max / img_size_min
+    num_scale = int(np.round(np.log(tmp_scale) / np.log(scale_factor)))
+    size_list = [int(img_size_min * scale_factor ** i) for i in range(num_scale + 1)]
+
+    generator_model, discriminator_model, model_name = get_gan()
     dataset = celeb_a_dataset(dataset_root,batch_size = batch_size)
     model_dataset = model_name + '-' + dataset.name
 
@@ -45,7 +54,7 @@ def main(continue_train, train_time, train_epoch):
     disc_loss = tf.keras.metrics.Mean(name='disc_loss')
 
     train = train_one_epoch(model=[generator_model, discriminator_model], train_dataset=train_dataset,
-              optimizers=[generator_optimizer, discriminator_optimizer], metrics=[gen_loss, disc_loss], noise_dim=noise_dim, gp=20)
+              optimizers=[generator_optimizer, discriminator_optimizer], metrics=[gen_loss, disc_loss], size_list=size_list, gp=0.1)
 
     for epoch in range(train_epoch):
         train.train(epoch=epoch, pic=pic)
