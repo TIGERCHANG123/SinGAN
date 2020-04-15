@@ -42,7 +42,7 @@ class train_one_epoch():
             fake_loss = self.get_loss(fake_output)
             real_loss = self.get_loss(real_output)
             # gp calculation
-            resize_img = tf.image.resize(image2, fake_image_list[stage].shape)
+            resize_img = tf.image.resize(image2, (fake_image_list[stage].shape[1], fake_image_list[stage].shape[2]))
             rate = np.random.rand()
             mixed_pic = rate * resize_img + (1 - rate) * fake_image_list[stage]
             with tf.GradientTape() as mixed_tape:
