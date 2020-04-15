@@ -22,7 +22,7 @@ class train_one_epoch():
         image2 = image
         for i in range(stage+1):
             z_list.append(tf.zeros(shape=[image1.shape[0], self.size_list[i], self.size_list[i], 1]))
-        z_list[0] = tf.convert_to_tensor(np.random.randn(image1.shape[0], z_list[0].shape[1], z_list[0].shape[2]))
+        z_list[0] = tf.convert_to_tensor(np.random.randn(image1.shape[0], z_list[0].shape[1], z_list[0].shape[2], 1))
         with tf.GradientTape() as GenTape, tf.GradientTape() as DiscTape:
             mse_image_list = self.generator(image1, z_list, training=True)
             resize_img = tf.image.resize(image2, mse_image_list[-1].shape)
