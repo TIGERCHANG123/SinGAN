@@ -7,7 +7,7 @@ from SinGAN import get_gan
 from show_pic import draw
 import fid
 from Train import train_one_epoch
-from datasets.celeb_A_dataset import celeb_a_dataset
+from datasets.one_photo import photo_dataset
 from tensorflow.compat.v1 import ConfigProto
 from tensorflow.compat.v1 import InteractiveSession
 import numpy as np
@@ -24,7 +24,7 @@ dataset_root = '/content'
 def main(continue_train, train_time, train_epoch):
     os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # or any {'0', '1', '2'}
     noise_dim = 100
-    batch_size = 64
+    batch_size = 3
 
     img_size_max = 250
     img_size_min = 25
@@ -34,13 +34,13 @@ def main(continue_train, train_time, train_epoch):
     size_list = [int(img_size_min * scale_factor ** i) for i in range(num_scale + 1)]
 
     generator_model, discriminator_model, model_name = get_gan()
-    dataset = celeb_a_dataset(dataset_root,batch_size = batch_size)
+    dataset = photo_dataset(dataset_root,batch_size=1, total_images=2000)
     model_dataset = model_name + '-' + dataset.name
 
     train_dataset = dataset.get_train_dataset()
     pic = draw(10, temp_root, model_dataset, train_time=train_time)
-    generator_optimizer = tf.keras.optimizers.Adam(2e-4, beta_1=0.5)
-    discriminator_optimizer = tf.keras.optimizers.Adam(2e-4, beta_1=0.5)
+    generator_optimizer = tf.keras.optimizers.Adam(5e-4, beta_1=0.5)
+    discriminator_optimizer = tf.keras.optimizers.Adam(5e-4, beta_1=0.5)
 
     checkpoint_path = temp_root + '/temp_model_save/' + model_dataset
     ckpt = tf.train.Checkpoint(genetator_optimizers=generator_optimizer, discriminator_optimizer=discriminator_optimizer ,
