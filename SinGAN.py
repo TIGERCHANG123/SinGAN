@@ -44,7 +44,7 @@ class discriminator_model(tf.keras.Model):
         nf = nf * 2
         self.discriminators.append(discriminator(nf, name='discriminator_{}'.format(i)))
   def call(self, real_img=None, fake_img_list=None, stage=None):
-    real_x = tf.image.resize(real_img, fake_img_list[stage].shape)
+    real_x = tf.image.resize(real_img, (fake_img_list[stage].shape[1], fake_img_list[stage].shape[2]))
     real_x = self.discriminators[stage](real_x)
     fake_x = self.discriminators[stage](fake_img_list[stage])
     return real_x, fake_x
