@@ -37,7 +37,7 @@ class train_one_epoch():
             z_list = [rmse_list[i] * tf.convert_to_tensor(np.random.randn(1, z_list[i].shape[1], z_list[i].shape[2], 1)) for i in range(stage+1)]
 
             fake_image_list = self.generator(image1, z_list, training=True)
-            real_output, fake_output = self.discriminator(image2, fake_image_list, training=False)
+            real_output, fake_output = self.discriminator(image2, fake_image_list, stage, training=True)
 
             fake_loss = self.get_loss(fake_output)
             real_loss = self.get_loss(real_output)
@@ -47,7 +47,7 @@ class train_one_epoch():
             mixed_pic = rate * resize_img + (1 - rate) * fake_image_list[stage]
             with tf.GradientTape() as mixed_tape:
                 mixed_tape.watch(mixed_pic)
-                mixed_output = self.discriminator(mixed_pic)
+                mixed_output, _ = self.discriminator(mixed_pic, fake_image_list, stage, training=True)
             grad_mixed = mixed_tape.gradient(mixed_output, mixed_pic)
             norm_grad_mixed = tf.sqrt(tf.reduce_sum(tf.square(grad_mixed), axis=[1, 2, 3]))
             grad_penalty = tf.reduce_mean(tf.square(norm_grad_mixed - 1))
