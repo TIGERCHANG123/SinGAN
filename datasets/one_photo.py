@@ -6,7 +6,7 @@ class photo_dataset():
         self.file_path = root + '/datasets/one_photo'
         self.batch_size = batch_size
         self.total_images = total_images
-        self.file_name = self.file_path + 'balloons.png'
+        self.file_name = self.file_path + '/balloons.png'
         self.name = 'one_photo'
     def generator(self):
         for i in range(self.total_images):
