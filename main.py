@@ -61,7 +61,7 @@ def main(continue_train, train_time, train_epoch):
         pic.show()
         if (epoch + 1) % 5 == 0:
             ckpt_manager.save()
-        pic.save_created_pic(generator_model, 8, noise_dim, epoch)
+        pic.save_created_pic(generator_model, epoch, size_list)
     pic.show_created_pic(generator_model, 8, noise_dim)
 
     # # fid score

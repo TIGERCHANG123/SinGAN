@@ -48,8 +48,8 @@ class train_one_epoch():
             grad_mixed = mixed_tape.gradient(mixed_output, mixed_pic)
             norm_grad_mixed = tf.sqrt(tf.reduce_sum(tf.square(grad_mixed), axis=[1, 2, 3]))
             grad_penalty = tf.reduce_mean(tf.square(norm_grad_mixed - 1))
-            disc_loss = fake_loss - real_loss + self.gp * grad_penalty
 
+            disc_loss = fake_loss - real_loss + self.gp * grad_penalty
             gen_loss = -fake_loss + 10 * g_rec
         self.gen_loss(gen_loss)
         self.disc_loss(disc_loss)
