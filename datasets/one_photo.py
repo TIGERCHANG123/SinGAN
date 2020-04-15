@@ -12,7 +12,7 @@ class photo_dataset():
         for i in range(self.total_images):
             yield cv2.imread(self.file_name, 1)
     def parse(self, x):
-        print(x)
+        # print(x)
         x = tf.cast(x, tf.float32)
         x = x/255 * 2 - 1
         return x

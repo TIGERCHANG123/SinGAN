@@ -73,4 +73,4 @@ class train_one_epoch():
                     self.train_step(images, stage, False)
                 pic.add([self.gen_loss.result().numpy(), self.disc_loss.result().numpy()])
                 pic.save()
-                print('epoch: {}, gen loss: {}, disc loss: {}'.format(epoch, self.gen_loss.result(), self.disc_loss.result()))
+                print('epoch: {}, batch: {}, gen loss: {}, disc loss: {}'.format(epoch, batch, self.gen_loss.result(), self.disc_loss.result()))
