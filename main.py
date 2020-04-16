@@ -16,10 +16,10 @@ import numpy as np
 ubuntu_root='/home/tigerc'
 windows_root='D:/Automatic/SRTP/GAN'
 root = '/content/drive/My Drive'
-# root = windows_root
+root = windows_root
 temp_root = root+'/temp'
 dataset_root = '/content'
-# dataset_root = root
+dataset_root = root
 
 def main(continue_train, train_time, train_epoch):
     os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # or any {'0', '1', '2'}
@@ -34,7 +34,7 @@ def main(continue_train, train_time, train_epoch):
     size_list = [int(img_size_min * scale_factor ** i) for i in range(num_scale + 1)]
 
     generator_model, discriminator_model, model_name = get_gan()
-    dataset = photo_dataset(dataset_root,batch_size=1, total_images=2000)
+    dataset = photo_dataset(dataset_root,batch_size=1, total_images=5)
     model_dataset = model_name + '-' + dataset.name
 
     train_dataset = dataset.get_train_dataset()
