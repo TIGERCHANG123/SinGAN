@@ -21,8 +21,8 @@ class train_one_epoch():
         image1 = tf.image.resize(image, (self.size_list[stage], self.size_list[stage]))
         image2 = tf.image.resize(image, (self.size_list[stage], self.size_list[stage]))
         for i in range(stage + 1):
-            z_list.append(tf.zeros(shape=[image1.shape[0], self.size_list[i], self.size_list[i], 1]))
-        z_list[0] = tf.convert_to_tensor(np.random.randn(image1.shape[0], z_list[0].shape[1], z_list[0].shape[2], 1))
+            z_list.append(tf.zeros(shape=[image1.shape[0], self.size_list[i], self.size_list[i], 3]))
+        z_list[0] = tf.convert_to_tensor(np.random.randn(image1.shape[0], z_list[0].shape[1], z_list[0].shape[2], 3))
         with tf.GradientTape() as GenTape, tf.GradientTape() as DiscTape:
             mse_image_list = self.generator(image1, z_list, training=True)
             g_rec = 10 * tf.keras.losses.MSE(mse_image_list[-1], image2)
@@ -31,8 +31,8 @@ class train_one_epoch():
                 if i != 0:
                     resize_img = tf.image.resize(image2, (mse_image_list[i].shape[1], mse_image_list[i].shape[2]))
                     rmse = tf.math.sqrt(tf.keras.losses.MSE(mse_image_list[i], resize_img))
-                    rmse_list.append(rmse)
-            z_list = [rmse_list[i] * tf.convert_to_tensor(np.random.randn(1, z_list[i].shape[1], z_list[i].shape[2], 1)) for i in range(stage+1)]
+                    rmse_list.append(tf.expand_dims(rmse, axis=3))
+            z_list = [rmse_list[i] * tf.convert_to_tensor(np.random.randn(1, z_list[i].shape[1], z_list[i].shape[2], 3), dtype=tf.float32) for i in range(stage+1)]
 
             fake_image_list = self.generator(image1, z_list, training=True)
             real_output = self.discriminator(image2, stage, training=True)

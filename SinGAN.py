@@ -23,6 +23,7 @@ class generator_model(tf.keras.Model):
         x = self.generator_first(z_list[0])
         x_list.append(x)
       else:
+
         x = tf.image.resize(x_list[i-1], (z_list[i].shape[1], z_list[i].shape[2]))
         x = self.generator_middle[i-1](x, z_list[i])
         x_list.append(x)
